@@ -10,7 +10,11 @@ Its general perpose is learning devops and time saving of DevOps engineers
 hosts=(host1) (user) (password),(host2) (user) (password)
 
 Eg. 
+
 [orgnization]
 
 hosts=182.213.434.2 ec2 password123,128.1326.132.23 ec2 password213
 
+# Usage
+
+pyhon3 viper-ssh.py -i config.ini -playbook [script] -n [name of section] -dest [where to land the script DEFAULT: /tmp/]
