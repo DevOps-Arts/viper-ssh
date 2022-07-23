@@ -18,3 +18,16 @@ hosts=182.213.434.2 ec2 password123,128.1326.132.23 ec2 password213
 # Usage
 
 pyhon3 viper-ssh.py -i config.ini -playbook [script] -n [name of section] -dest [where to land the script DEFAULT: /tmp/]
+
+# How to add ssh key
+
+
+
+The first thing you’ll need to do is make sure you’ve run the keygen command to generate the keys:
+
+ssh-keygen -t rsa
+
+Then use this command to push the key to the remote server, modifying it to match your server name.
+
+cat ~/.ssh/id_rsa.pub | ssh user@hostname 'cat >> .ssh/authorized_keys'
+
