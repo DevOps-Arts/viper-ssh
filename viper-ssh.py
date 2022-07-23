@@ -9,7 +9,7 @@ parser.add_argument('-i', required=True, help="The inventory file with extention
 parser.add_argument('-playbook', required=True, help="Your script to execute no fucking playbook is needed")
 parser.add_argument('-n', required=True, help="the name of hosts list see in viper-ssh docs")
 parser.add_argument('-dest', help="The destination of playbook to push and run the script see in docs")
-parser.add_argument('-havekey', help="If uou have the key stored in ~/.ssh/authorized_keys")
+parser.add_argument('-havekey', action='store_true', help="If uou have the key stored in ~/.ssh/authorized_keys")
 args = parser.parse_args()
 
 inv = args.i
@@ -18,7 +18,7 @@ nameofhosts = args.n
 dest = args.dest
 dest = str(dest)
 keytrigger = args.havekey
-keytrigger = str(keytrigger)
+
 
 print ("Destination : ", dest)
 if dest == "None":
@@ -66,10 +66,13 @@ def readandrun(nameofhosts, inv, playb):
         passwd = creds[2]
         script = os.path.basename(playb)
         #print (host , user, passwd, script)
-        if keytrigger != 'None':
-            run(host, user, passwd, script)
+        print ("[*] Key trigger ", keytrigger)
+        if keytrigger == True:
+           print("[*] Use Key flag triggered....................")
+           runwithkeys(host, user, script)
         else:
-            runwithkeys(host, user, script)
+            run(host, user, passwd, script)
+            print("[*] using password authentication............")
 
 
 readandrun(nameofhosts, inv, playb)
