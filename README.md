@@ -39,3 +39,7 @@ Then use this command to push the key to the remote server, modifying it to matc
 
 cat ~/.ssh/id_rsa.pub | ssh user@hostname 'cat >> .ssh/authorized_keys'
 
+
+# Full Youtube Tutorial
+
+ /*Coming soon !*/
