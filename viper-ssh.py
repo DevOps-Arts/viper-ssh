@@ -5,10 +5,11 @@ from os import path
 import argparse
 
 parser = argparse.ArgumentParser(description="viper-ssh simple and easy tool to save time from ansible inventory and playbook")
-parser.add_argument('-i', help="The inventory file with extention of .ini or .cfg")
-parser.add_argument('-playbook', help="Your script to execute no fucking playbook is needed")
-parser.add_argument('-n', help="the name of hosts list see in viper-ssh docs")
+parser.add_argument('-i', required=True, help="The inventory file with extention of .ini or .cfg")
+parser.add_argument('-playbook', required=True, help="Your script to execute no fucking playbook is needed")
+parser.add_argument('-n', required=True, help="the name of hosts list see in viper-ssh docs")
 parser.add_argument('-dest', help="The destination of playbook to push and run the script see in docs")
+parser.add_argument('-havekey', help="If uou have the key stored in ~/.ssh/authorized_keys")
 args = parser.parse_args()
 
 inv = args.i
@@ -16,6 +17,9 @@ playb = args.playbook
 nameofhosts = args.n
 dest = args.dest
 dest = str(dest)
+keytrigger = args.havekey
+keytrigger = str(keytrigger)
+
 print ("Destination : ", dest)
 if dest == "None":
     dest = "/tmp/"
@@ -36,6 +40,20 @@ def run(host, user, passwd, script):
     os.system(runbook)
     
 
+def runwithkeys(host, user, script):
+    push = 'scp ' + playb + ' ' + user + '@' + host + ':' + dest
+    runbook = 'ssh ' + user + '@' + host + " '(bash " + dest + script + ")'"
+    #print(push)
+    print("Authenticating with stored keys ......................")
+    print("Pushing file ......................................", script)
+    os.system(push)
+    #print(runbook)
+    print("[*] Executing that script .................................. ")
+    print("[+] Showing results ...................................... Host " + user + '@' + host)
+    os.system(runbook)
+
+
+
 def readandrun(nameofhosts, inv, playb):
     hosts = configparser.ConfigParser()
     hosts.read(inv)
@@ -48,6 +66,10 @@ def readandrun(nameofhosts, inv, playb):
         passwd = creds[2]
         script = os.path.basename(playb)
         #print (host , user, passwd, script)
-        run(host, user, passwd, script)
+        if keytrigger != 'None':
+            run(host, user, passwd, script)
+        else:
+            runwithkeys(host, user, script)
+
 
 readandrun(nameofhosts, inv, playb)
