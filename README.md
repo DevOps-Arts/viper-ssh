@@ -19,6 +19,14 @@ hosts=182.213.434.2 ec2 password123,128.1326.132.23 ec2 password213
 
 pyhon3 viper-ssh.py -i config.ini -playbook [script] -n [name of section] -dest [where to land the script DEFAULT: /tmp/]
 
+If you want to use stored keys then add this flag "-havekey" and add fake password in hosts list 
+
+Eg.
+
+in shell : pyhon3 viper-ssh.py -i config.ini -playbook [script] -n [name of section] -dest [where to land the script DEFAULT: /tmp/] -havekey
+in inventory : hosts=127.213.353.12 Username Fakepasswordcauseuadded
+
+
 # How to add ssh key
 
 
